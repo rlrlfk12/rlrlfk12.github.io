@@ -9,15 +9,45 @@
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=yiafbmr4z7"></script>
 </head>
 <body>
-<div id="map" style="width:100%;height:400px;"></div>
-
+<div id="map" style="width:100%;height:10000px;"></div>
 <script>
-var mapOptions = {
-    center: new naver.maps.LatLng(37.3595704, 127.105399),
-    zoom: 10
-};
 
-var map = new naver.maps.Map('map', mapOptions);
+var map = new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(37.06218236464249, 126.49987661191632),
+    mapTypeControl: true,
+    mapTypeControlOptions: {
+        style: naver.maps.MapTypeControlStyle.DROPDOWN
+    }
+});
+
+var cadastralLayer = new naver.maps.CadastralLayer();
+
+var btn = $('#cadastral');
+
+naver.maps.Event.addListener(map, 'cadastralLayer_changed', function(cadastralLayer) {
+    if (cadastralLayer.getMap()) {
+        btn.addClass('control-on').val('지적도 끄기');
+    } else {
+        btn.removeClass('control-on').val('지적도 켜기');
+    }
+});
+
+btn.on('click', function(e) {
+    e.preventDefault();
+
+    if (cadastralLayer.getMap()) {
+        cadastralLayer.setMap(null);
+        btn.removeClass('control-on').val('지적도 켜기');
+    } else {
+        cadastralLayer.setMap(map);
+        btn.addClass('control-on').val('지적도 끄기');
+    }
+});
+
+naver.maps.Event.once(map, 'init_stylemap', function() {
+    cadastralLayer.setMap(map);
+});
+
 </script>
 </body>
 </html>
