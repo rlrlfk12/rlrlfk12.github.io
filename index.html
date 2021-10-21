@@ -9,45 +9,54 @@
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=yiafbmr4z7"></script>
 </head>
 <body>
-<div id="map" style="width:10000px;height:10000px;"></div>
+
+<script>
+	
+	
+var map = new naver.maps.Map('map', {
+    useStyleMap: true,
+    zoom: 16,
+    center: new naver.maps.LatLng(37.5666103, 126.9783882)
+});
+
+</script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>1000000xy1000000</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=yiafbmr4z7"></script>
+</head>
+<body>
+<div id="map" style="width:1000000px%;height:1000000px;"></div>
 <script>
 
 var map = new naver.maps.Map('map', {
-    center: new naver.maps.LatLng(37.06218236464249, 126.49987661191632),
-    mapTypeControl: true,
-    mapTypeControlOptions: {
-        style: naver.maps.MapTypeControlStyle.DROPDOWN
-    }
+    center: new naver.maps.LatLng(37.3595704, 127.105399),
+    zoom: 15
 });
 
-var cadastralLayer = new naver.maps.CadastralLayer();
-
-var btn = $('#cadastral');
-
-naver.maps.Event.addListener(map, 'cadastralLayer_changed', function(cadastralLayer) {
-    if (cadastralLayer.getMap()) {
-        btn.addClass('control-on').val('지적도 끄기');
-    } else {
-        btn.removeClass('control-on').val('지적도 켜기');
-    }
-});
-
-btn.on('click', function(e) {
+var btns = $(".buttons > input");
+btns.on("click", function(e) {
     e.preventDefault();
 
-    if (cadastralLayer.getMap()) {
-        cadastralLayer.setMap(null);
-        btn.removeClass('control-on').val('지적도 켜기');
-    } else {
-        cadastralLayer.setMap(map);
-        btn.addClass('control-on').val('지적도 끄기');
+    var mapTypeId = this.id;
+
+    if (map.getMapTypeId() !== naver.maps.MapTypeId[mapTypeId]) {
+        map.setMapTypeId(naver.maps.MapTypeId[mapTypeId]); // 지도 유형 변경하기
+
+        btns.removeClass("control-on");
+        $(this).addClass("control-on");
     }
 });
-
-naver.maps.Event.once(map, 'init_stylemap', function() {
-    cadastralLayer.setMap(map);
 });
-
 </script>
 </body>
 </html>
